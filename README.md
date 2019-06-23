@@ -14,3 +14,11 @@
 	6)其它操作指令： git checkout master //切换到master分支
 				   git merge dev //合并dev分支的内容
 				   git branch //查看当前存在的分支和所在的分支
+##2.遇到的问题
+	1）文件不小心删除文件，回收站还原；
+	2)解决浏览器跨域问题："proxy":"http://localhost:5000";
+	
+##零碎的知识点
+    1）路由组件的三大属性：history loaction match  
+    2）初始化渲染：有生命周期函数和render，更新只有render；
+    3）没有状态 没有生命周期函数 定义成工厂函数组件
