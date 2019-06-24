@@ -6,8 +6,8 @@ import dayjs from 'dayjs';
 import MyButton from '../my-button';
 import { getItem, removeItem } from "../../utils/storage-tools";
 import { reqWeather } from '../../api';
+import menuList from '../../config/menu-config';
 
-import logo from '../../assets/images/logo.png';
 import './index.less';
 
 class HeaderMain extends Component {
@@ -19,7 +19,8 @@ class HeaderMain extends Component {
 
   componentWillMount() {
     //只需要读取一次
-    this.username = getItem().username
+    this.username = getItem().username;
+    this.title = this.getTitle(this.props);
   }
 
   async componentDidMount() {
@@ -29,12 +30,19 @@ class HeaderMain extends Component {
       })
     }, 1000);
     //发送请求，请求天气
-    const result = await reqWeather()
+    const result = await reqWeather();
     if (result) {
       this.setState(result);
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.title = this.getTitle(nextProps);
+  }
+
+  /**
+   * 登出
+   */
   logout = () => {
     Modal.confirm({
       title: '你确认要退出登陆吗',
@@ -49,6 +57,31 @@ class HeaderMain extends Component {
       },
     })
   };
+  /**
+   * 获取title
+   * @returns {string|*}
+   */
+  getTitle = (nextProps) => {
+    const { pathname } = nextProps.location;
+    let title = '';
+
+    for (var i = 0; i < menuList.length; i++) {
+      const menu = menuList[i];
+      if (menu.children) {
+        for (let j = 0; j < menu.children.length; j++) {
+          const item = menu.children[j];
+          if (item.key === pathname) {
+            return item.title;
+          }
+        }
+      } else {
+        if (menu.key === pathname) {
+          return menu.title;
+        }
+      }
+    }
+    return title;
+  };
 
   render() {
     const { sysTime, weather, weatherImg } = this.state;
@@ -58,7 +91,7 @@ class HeaderMain extends Component {
         <MyButton onClick={this.logout}>退出</MyButton>
       </div>
       <div className="header-main-bottom">
-        <span className="header-main-left">用户管理</span>
+        <span className="header-main-left">{this.title}</span>
         <div className="header-main-right">
           <span>{dayjs(sysTime).format('YYYY-MM-DD HH:mm:ss')}</span>
           <img src={weatherImg} alt=""/>
