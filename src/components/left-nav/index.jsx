@@ -62,7 +62,7 @@ class LeftNav extends Component {
         return this.createMenu(menu)
       }
     });
-    this.selectedKey = this.props.location.pathname;
+    this.selectedKey = pathname;
   }
 
   render() {
