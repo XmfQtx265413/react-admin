@@ -27,6 +27,9 @@ class LeftNav extends Component {
   //拿不到函数componentWillMount的返回值，因为不是我们调用的
   componentWillMount() {
     const { pathname } = this.props.location;
+
+    let isHome = true;
+
     //根据menuList生成菜单
     //根据原数组生成一个长度一样的新数组，新数组的每一项值我们可以自定义
     //menus跟状态没关系，所以可以直接挂载到this上
@@ -52,17 +55,20 @@ class LeftNav extends Component {
                 //只要相等说明当前地址是二级菜单,需要展开一级菜单
                 //初始化展开的菜单
                 this.openKey = menu.key;
+                isHome = false;
               }
               return this.createMenu(item)
             })
           }
         </SubMenu>
       } else {
+          if (menu.key === pathname) isHome = false;
         //一级菜单
         return this.createMenu(menu)
       }
     });
-    this.selectedKey = pathname;
+    //初始化选中菜单
+    this.selectedKey =  isHome ? '/home' : pathname;
   }
 
   render() {
