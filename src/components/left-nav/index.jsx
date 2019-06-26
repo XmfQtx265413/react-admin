@@ -26,7 +26,13 @@ class LeftNav extends Component {
   };
   //拿不到函数componentWillMount的返回值，因为不是我们调用的
   componentWillMount() {
-    const { pathname } = this.props.location;
+    let { pathname } = this.props.location;
+
+    const pathnameReg = /^\/product\//;
+
+    if (pathnameReg.test(pathname)) {
+      pathname = pathname.slice(0, 8);
+    }
 
     let isHome = true;
 

@@ -71,7 +71,14 @@ class HeaderMain extends Component {
    * @returns {string|*}
    */
   getTitle = (nextProps) => {
-    const { pathname } = nextProps.location;
+    let { pathname } = nextProps.location;
+
+
+    const pathnameReg = /^\/product\//;
+
+    if (pathnameReg.test(pathname)) {
+      pathname = pathname.slice(0, 8);
+    }
     let title = '';
 
     for (var i = 0; i < menuList.length; i++) {
