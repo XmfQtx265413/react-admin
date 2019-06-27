@@ -9,8 +9,8 @@ export default class Product extends Component {
   render() {
     return <Switch>
       <Route path='/product/index' component={Index}/>
-      <Route path='/product/index' component={SaveUpdate}/>
-      <Route path='/product/index' component={Detail}/>
+      <Route path='/product/saveupdate' component={SaveUpdate}/>
+      <Route path='/product/detail' component={Detail}/>
       <Redirect to="/product/index"/>
       </Switch>;
   }
