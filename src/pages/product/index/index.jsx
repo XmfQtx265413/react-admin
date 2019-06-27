@@ -36,6 +36,10 @@ export default class Index extends Component {
     this.props.history.push('/product/saveupdate');
   };
 
+  componentWillUnmount() {
+    console.log('index -- componentWillUnmount()');
+  }
+
   render() {
 
     const { products, total, loading } = this.state;
