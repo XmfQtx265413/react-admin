@@ -9,18 +9,28 @@ const { Option } = Select;
 
 export default class Index extends Component {
   state = {
-    products: []
+    products: [],
+    total: 0,
+    loading: true
   };
 
-  async componentDidMount() {
-    const result = await reqProducts(1, 3);
-    console.log(result);
+  componentDidMount() {
+    this.getProducts(1, 3)
+  };
+
+  getProducts = async (pageNum, pageSize) => {
+    this.setState({
+      loading: true
+    });
+    const result = await reqProducts(pageNum, pageSize);
     if (result) {
       this.setState({
-        products: result.list
+        total: result.total,
+        products: result.list,
+        loading: false
       })
     }
-  }
+  };
 
   showAddProduct = () => {
     this.props.history.push('/product/saveupdate');
@@ -28,7 +38,7 @@ export default class Index extends Component {
 
   render() {
 
-    const { products } = this.state;
+    const { products, total, loading } = this.state;
 
     const columns = [
       {
@@ -82,11 +92,15 @@ export default class Index extends Component {
         dataSource={products}
         bordered={true}
         pagination={{
-          showQuickJumper: true, //是否可以快速跳转至某页
           showSizeChanger: true, //是否可以改变 pageSize
           pageSizeOptions: ['3', '6', '9'], //指定每页可以显示多少条
-          defaultPageSize: 3 //默认的每页条数
+          defaultPageSize: 3, //默认的每页条数
+          total,
+          onChange: this.getProducts,
+          onShowSizeChange: this.getProducts
         }}
+        rowKey="_id"
+        loading={loading}
       />
     </Card>
   }
